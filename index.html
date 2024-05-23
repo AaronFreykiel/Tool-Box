@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0106)file:///C:/Users/%E5%88%98%E5%9D%9A/Desktop/%E6%96%87%E6%9C%AC%E9%82%AE%E7%AE%B1%E6%8F%90%E5%8F%965.5.html -->
-<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文本邮箱提取</title>
     <style>
@@ -316,11 +316,11 @@
         <h2>文本邮箱提取工具</h2>
     </div>
     <div class="container">
-        <form onsubmit="return extractEmails()">
+               <form onsubmit="return extractEmails()">
             <input type="text" id="inputText" placeholder="输入包含邮箱的文本" onclick="clearText(this)">
             <div class="dropdown" onmouseover="toggleDomainSelection(true)" onmouseout="toggleDomainSelection(false)">
                 <div id="domainSelection">选择指定邮箱后缀</div>
-                <div class="dropdown-content" id="domainSelectionContainer" style="display: none;"><label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked=""> 全选</label></div>
+                <div class="dropdown-content" id="domainSelectionContainer" style="display: none;"><label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label></div>
             </div>
             <input type="submit" value="提取邮箱">
         </form>
@@ -349,14 +349,14 @@
         function autoDetectDomains() {
             const text = document.getElementById('inputText').value;
             const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
-            const allDomains = emails ? [...new Set(emails.map(email => email.split('@')[1]))] : [];
+            const allDomains = emails ? [...new Set(emails.map(email => email.split('@')[1].toLowerCase()))] : [];
 
             const container = document.getElementById('domainSelectionContainer');
             container.innerHTML = '<label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label>';
 
             allDomains.forEach(domain => {
                 const label = document.createElement('label');
-                label.innerHTML = `<input type="checkbox" class="domain-checkbox" value="@${domain}" checked> @${domain}`;
+                label.innerHTML = `<input type="checkbox" class="domain-checkbox" value="@${domain}" checked onclick="checkSelectAll()"> @${domain}`;
                 container.appendChild(label);
             });
 
@@ -374,6 +374,13 @@
             });
         }
 
+        function checkSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.domain-checkbox');
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            selectAllCheckbox.checked = allChecked;
+        }
+
         function toggleDomainSelection(show) {
             const dropdownContent = document.getElementById('domainSelectionContainer');
             if (!dropdownContent.contains(event.relatedTarget)) {
@@ -382,7 +389,7 @@
         }
 
         function extractEmails() {
-            const text = document.getElementById("inputText").value;
+            const text = document.getElementById("inputText").value.toLowerCase();
             const selectedDomains = Array.from(document.querySelectorAll('.domain-checkbox:checked')).map(cb => cb.value);
             const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
 
@@ -393,7 +400,7 @@
                 const resultText = uniqueEmails.join('\n');
                 document.getElementById("emails").textContent = resultText;
                 document.getElementById("emailCount").innerHTML = `邮箱数量: <span class="count-number">${uniqueEmails.length}</span>`;
-                const uniqueDomains = new Set(uniqueEmails.map(email => email.split('@')[1]));
+                const uniqueDomains = new Set(uniqueEmails.map(email => email.split('@')[1].toLowerCase()));
                 document.getElementById("domainCount").innerHTML = `后缀数量: <span class="count-number">${uniqueDomains.size}</span>`;
                 updateSavedEmailsTextarea();
             } else {
@@ -405,7 +412,7 @@
         function clearText(input) {
             input.value = "";
             document.getElementById('domainSelectionContainer').innerHTML = '<label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label>';
-	document.getElementById("domainSelection").textContent = "选择指定邮箱后缀";
+            document.getElementById("domainSelection").textContent = "选择指定邮箱后缀";
         }
 
         function copyEmails() {
@@ -479,8 +486,6 @@
             document.getElementById('domainSelectionContainer').style.display = 'none';
         });
     </script>
+</body>
+</html>
 
-
-
-
-</body></html>
