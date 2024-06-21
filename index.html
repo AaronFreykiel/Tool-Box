@@ -305,159 +305,209 @@
     <textarea id="savedEmails" readonly="" style="display:none"></textarea>
 
     <script>
-        const savedEmails = new Set();
+    const savedEmails = new Set();
 
-        document.getElementById('inputText').addEventListener('input', autoDetectDomains);
+    // 监听输入框内容变化，自动检测邮箱后缀
+    document.getElementById('inputText').addEventListener('input', autoDetectDomains);
 
-        function autoDetectDomains() {
-            const text = document.getElementById('inputText').value;
-            const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
-            const allDomains = emails ? [...new Set(emails.map(email => email.split('@')[1].toLowerCase()))] : [];
+    function autoDetectDomains() {
+        const text = document.getElementById('inputText').value;
+        const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
+        const allDomains = emails ? [...new Set(emails.map(email => email.split('@')[1].toLowerCase()))] : [];
 
-            const container = document.getElementById('domainSelectionContainer');
-            container.innerHTML = '<label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label>';
+        const container = document.getElementById('domainSelectionContainer');
+        container.innerHTML = '<label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label>';
 
-            allDomains.forEach(domain => {
-                const label = document.createElement('label');
-                label.innerHTML = `<input type="checkbox" class="domain-checkbox" value="@${domain}" checked onclick="checkSelectAll()"> @${domain}`;
-                container.appendChild(label);
-            });
-
-            if (allDomains.length === 0) {
-                const noDomainsLabel = document.createElement('label');
-                noDomainsLabel.textContent = '未找到邮箱后缀';
-                container.appendChild(noDomainsLabel);
-            }
-        }
-
-        function toggleSelectAll(selectAllCheckbox) {
-            const checkboxes = document.querySelectorAll('.domain-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        }
-
-        function checkSelectAll() {
-            const selectAllCheckbox = document.getElementById('selectAll');
-            const checkboxes = document.querySelectorAll('.domain-checkbox');
-            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-            selectAllCheckbox.checked = allChecked;
-        }
-
-        function toggleDomainSelection(show) {
-            const dropdownContent = document.getElementById('domainSelectionContainer');
-            if (!dropdownContent.contains(event.relatedTarget)) {
-                dropdownContent.style.display = show ? 'block' : 'none';
-            }
-        }
-
-        function extractEmails() {
-            const text = document.getElementById("inputText").value.toLowerCase();
-            const selectedDomains = Array.from(document.querySelectorAll('.domain-checkbox:checked')).map(cb => cb.value);
-            const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
-
-            if (emails && selectedDomains.length > 0) {
-                let filteredEmails = emails.filter(email => selectedDomains.some(domain => email.endsWith(domain)));
-                filteredEmails.forEach(email => savedEmails.add(email));
-                const uniqueEmails = Array.from(savedEmails);
-                const resultText = uniqueEmails.join('\n');
-                document.getElementById("emails").textContent = resultText;
-                document.getElementById("emailCount").innerHTML = `邮箱数量: <span class="count-number">${uniqueEmails.length}</span>`;
-                const uniqueDomains = new Set(uniqueEmails.map(email => email.split('@')[1].toLowerCase()));
-                document.getElementById("domainCount").innerHTML = `后缀数量: <span class="count-number">${uniqueDomains.size}</span>`;
-                updateSavedEmailsTextarea();
-            } else {
-                showAlert("未找到邮箱地址或未选择后缀");
-            }
-            return false;
-        }
-
-        function clearText(input) {
-            input.value = "";
-            document.getElementById('domainSelectionContainer').innerHTML = '<label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label>';
-            document.getElementById("domainSelection").textContent = "选择指定邮箱后缀";
-        }
-
-        function copyEmails() {
-            const emails = document.getElementById("emails").textContent;
-            const textarea = document.createElement("textarea");
-            textarea.value = emails;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textarea);
-            showAlert("邮箱地址已复制到剪贴板");
-        }
-
-        function clearEmails() {
-            document.getElementById("emails").textContent = "";
-            document.getElementById("emailCount").innerHTML = '邮箱数量: <span class="count-number">0</span>';
-            document.getElementById("domainCount").innerHTML = '后缀数量: <span class="count-number">0</span>';
-            savedEmails.clear();
-            updateSavedEmailsTextarea();
-            showClearAlert("已清空~");
-        }
-
-        function showAlert(message) {
-            const alert = document.getElementById("alert");
-            alert.textContent = message;
-            alert.style.display = "block";
-            setTimeout(() => {
-                alert.style.opacity = "0";
-                setTimeout(() => {
-                    alert.style.display = "none";
-                    alert.style.opacity = "1";
-                }, 300);
-            }, 1000);
-        }
-
-        function showClearAlert(message) {
-            const alert = document.getElementById("clear-alert");
-            alert.textContent = message;
-            alert.style.display = "block";
-            setTimeout(() => {
-                alert.style.opacity = "0";
-                setTimeout(() => {
-                    alert.style.display = "none";
-                    alert.style.opacity = "1";
-                }, 300);
-            }, 1000);
-        }
-
-        function updateSavedEmailsTextarea() {
-            document.getElementById("savedEmails").value = Array.from(savedEmails).join("\n");
-        }
-
-        function downloadSavedEmails() {
-            const emailsText = Array.from(savedEmails).join("\n");
-            const blob = new Blob([emailsText], { type: "text/plain" });
-            const url = window.URL.createObjectURL(blob);
-
-            // 获取当前日期和时间
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-
-            // 格式化日期和时间
-            const dateTime = `${year}-${month}-${day}(${hours}.${minutes})`;
-            const fileName = `亚伦邮箱${dateTime}.txt`;
-
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('domainSelectionContainer').style.display = 'none';
+        allDomains.forEach(domain => {
+            const label = document.createElement('label');
+            label.innerHTML = `<input type="checkbox" class="domain-checkbox" value="@${domain}" checked onclick="checkSelectAll()"> @${domain}`;
+            container.appendChild(label);
         });
 
-	    </script>
+        if (allDomains.length === 0) {
+            const noDomainsLabel = document.createElement('label');
+            noDomainsLabel.textContent = '未找到邮箱后缀';
+            container.appendChild(noDomainsLabel);
+        }
+    }
+
+    // 全选/取消全选后，更新所有后缀选择框状态
+    function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('.domain-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
+
+    // 检查是否所有后缀都已选择，更新全选框状态
+    function checkSelectAll() {
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.domain-checkbox');
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        selectAllCheckbox.checked = allChecked;
+    }
+
+    // 显示/隐藏后缀选择下拉框
+    function toggleDomainSelection(show) {
+        const dropdownContent = document.getElementById('domainSelectionContainer');
+        if (!dropdownContent.contains(event.relatedTarget)) {
+            dropdownContent.style.display = show ? 'block' : 'none';
+        }
+    }
+
+    // 从输入文本提取邮箱并更新页面显示
+    function extractEmails() {
+        const text = document.getElementById("inputText").value.toLowerCase();
+        const selectedDomains = Array.from(document.querySelectorAll('.domain-checkbox:checked')).map(cb => cb.value);
+        const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
+
+        if (emails && selectedDomains.length > 0) {
+            let filteredEmails = emails.filter(email => selectedDomains.some(domain => email.endsWith(domain)));
+            filteredEmails.forEach(email => savedEmails.add(email));
+            updateEmailOutput();
+        } else {
+            showAlert("未找到邮箱地址或未选择后缀");
+        }
+        return false;
+    }
+
+    // 清空输入文本框内容
+    function clearText(input) {
+        input.value = "";
+        document.getElementById('domainSelectionContainer').innerHTML = '<label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label>';
+        document.getElementById("domainSelection").textContent = "选择指定邮箱后缀";
+    }
+
+    // 复制邮箱地址到剪贴板
+    function copyEmails() {
+        const emails = document.getElementById("emails").textContent;
+        const textarea = document.createElement("textarea");
+        textarea.value = emails;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        showAlert("邮箱地址已复制到剪贴板");
+    }
+
+    // 清空已保存的邮箱内容
+    function clearEmails() {
+        document.getElementById("emails").textContent = "";
+        document.getElementById("emailCount").innerHTML = '邮箱数量: <span class="count-number">0</span>';
+        document.getElementById("domainCount").innerHTML = '后缀数量: <span class="count-number">0</span>';
+        savedEmails.clear();
+        updateSavedEmailsTextarea();
+        showClearAlert("已清空~");
+
+        // 重新绑定文件上传处理函数
+        document.getElementById('fileInput').removeEventListener('change', handleFileUpload);
+        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+    }
+
+    // 显示提示信息
+    function showAlert(message) {
+        const alert = document.getElementById("alert");
+        alert.textContent = message;
+        alert.style.display = "block";
+        setTimeout(() => {
+            alert.style.opacity = "0";
+            setTimeout(() => {
+                alert.style.display = "none";
+                alert.style.opacity = "1";
+            }, 300);
+        }, 1000);
+    }
+
+    // 显示清空提示信息
+    function showClearAlert(message) {
+        const alert = document.getElementById("clear-alert");
+        alert.textContent = message;
+        alert.style.display = "block";
+        setTimeout(() => {
+            alert.style.opacity = "0";
+            setTimeout(() => {
+                alert.style.display = "none";
+                alert.style.opacity = "1";
+            }, 300);
+        }, 1000);
+    }
+
+    // 更新已保存的邮箱文本框内容
+    function updateSavedEmailsTextarea() {
+        document.getElementById("savedEmails").value = Array.from(savedEmails).join("\n");
+    }
+
+    // 下载已保存的邮箱列表
+    function downloadSavedEmails() {
+        const emailsText = Array.from(savedEmails).join("\n");
+        const blob = new Blob([emailsText], { type: "text/plain" });
+        const url = window.URL.createObjectURL(blob);
+
+        // 获取当前日期和时间
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+
+        // 格式化日期和时间
+        const dateTime = `${year}-${month}-${day}(${hours}.${minutes})`;
+        const fileName = `亚伦邮箱${dateTime}.txt`;
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }
+
+    // 页面加载完成后隐藏后缀选择框
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('domainSelectionContainer').style.display = 'none';
+    });
+
+    // 处理文件上传事件
+    document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const fileContent = e.target.result;
+            const emailsFromFile = extractEmailsFromFile(fileContent);
+            addEmails(emailsFromFile);
+        };
+        reader.readAsText(file);
+    }
+
+    // 从文件内容提取邮箱列表
+    function extractEmailsFromFile(content) {
+        const emails = content.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g) || [];
+        return emails.map(email => email.toLowerCase());
+    }
+
+    // 将新的邮箱列表添加到已保存的邮箱集合中
+    function addEmails(newEmails) {
+        newEmails.forEach(email => savedEmails.add(email));
+        updateEmailOutput();
+    }
+
+    // 更新邮箱列表输出框和统计信息
+    function updateEmailOutput() {
+        const uniqueEmails = Array.from(savedEmails);
+        const resultText = uniqueEmails.join('\n');
+        document.getElementById("emails").textContent = resultText;
+        document.getElementById("emailCount").innerHTML = `邮箱数量: <span class="count-number">${uniqueEmails.length}</span>`;
+        const uniqueDomains = new Set(uniqueEmails.map(email => email.split('@')[1].toLowerCase()));
+        document.getElementById("domainCount").innerHTML = `后缀数量: <span class="count-number">${uniqueDomains.size}</span>`;
+        updateSavedEmailsTextarea();
+    }
+</script>
+
 </body>
 </html>
