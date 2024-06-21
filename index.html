@@ -85,7 +85,7 @@
 
         input[type="text"] {
             max-width: 400px;
-            text-align: left;
+            text-align: center;
         }
 
         #inputText::placeholder {
@@ -212,6 +212,14 @@
             box-sizing: border-box;
         }
 
+        #countryInput::placeholder {
+            text-align: center;
+        }
+
+        #countryInput:focus::placeholder {
+            visibility: hidden;
+        }
+
         .dropdown {
             width: 100%;
             max-width: 400px;
@@ -285,6 +293,7 @@
                 <div id="domainSelection">选择指定邮箱后缀</div>
                 <div class="dropdown-content" id="domainSelectionContainer" style="display: none;"><label id="selectAllLabel"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" checked> 全选</label></div>
             </div>
+             <input type="text" id="countryInput" placeholder="输入国家">
             <input type="submit" value="提取邮箱">
         </form>
 
@@ -307,7 +316,7 @@
 
     <textarea id="savedEmails" readonly="" style="display:none"></textarea>
 
-    <script>
+   <script>
     const savedEmails = new Set();
 
     // 监听输入框内容变化，自动检测邮箱后缀
@@ -442,30 +451,39 @@
 
     // 下载已保存的邮箱列表
     function downloadSavedEmails() {
-        const emailsText = Array.from(savedEmails).join("\n");
-        const blob = new Blob([emailsText], { type: "text/plain" });
-        const url = window.URL.createObjectURL(blob);
+    const emailsText = Array.from(savedEmails).join("\n");
+    const blob = new Blob([emailsText], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
 
-        // 获取当前日期和时间
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
+    // 获取当前日期和时间
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
 
-        // 格式化日期和时间
-        const dateTime = `${year}-${month}-${day}(${hours}.${minutes})`;
-        const fileName = `亚伦邮箱${dateTime}.txt`;
+    // 获取国家信息
+    const country = document.getElementById('countryInput').value.trim() || '默认国家';
 
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    }
+    // 格式化日期和时间
+    const dateTime = `${year}-${month}-${day}(${hours}.${minutes})`;
+    const fileName = `亚伦邮箱-${country}-${dateTime}.txt`;
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+}
+
+// 在DOMContentLoaded事件中执行时创建文件夹
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('domainSelectionContainer').style.display = 'none';
+});
+
 
     // 页面加载完成后隐藏后缀选择框
     document.addEventListener('DOMContentLoaded', () => {
