@@ -526,12 +526,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateEmailOutput() {
         const uniqueEmails = Array.from(savedEmails);
         const resultText = uniqueEmails.join('\n');
-        document.getElementById("emails").textContent = resultText;
+        const emailOutput = document.getElementById("emails");
+        emailOutput.textContent = resultText;
+        emailOutput.scrollTop = emailOutput.scrollHeight;  // 让输出框自动滚动到最底部
         document.getElementById("emailCount").innerHTML = `邮箱数量: <span class="count-number">${uniqueEmails.length}</span>`;
         const uniqueDomains = new Set(uniqueEmails.map(email => email.split('@')[1].toLowerCase()));
         document.getElementById("domainCount").innerHTML = `后缀数量: <span class="count-number">${uniqueDomains.size}</span>`;
         updateSavedEmailsTextarea();
     }
+
 
      function replaceDiacritics(text) {
     const diacriticsMap = {
