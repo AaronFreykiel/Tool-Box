@@ -278,10 +278,26 @@
         #selectAllLabel {
             font-weight: bold;
         }
+
+	.alert-success {
+	    position: fixed;
+	    top: 0;
+	    left: 50%;
+	    transform: translateX(-50%);
+	    padding: 10px;
+	    background-color: #f44336; /* 红色背景 */
+	    color: white;
+	    border-radius: 4px;
+	    display: none;
+	    z-index: 999;
+	    transition: opacity 0.3s ease;
+	}
+
     </style>
 </head>
 
 <body>
+    <div class="alert alert-success" id="success-alert" style="display: none;">提取到的邮箱数量: 0</div>
     <div class="alert" id="alert" style="display: none; opacity: 1;">未找到邮箱地址或未选择后缀</div>
     <div class="alert" id="clear-alert" style="display: none; opacity: 1;">已清空~</div>
     <div class="title-container">
@@ -370,21 +386,47 @@
     }
 
     // 从输入文本提取邮箱并更新页面显示
-    function extractEmails() {
+  function extractEmails() {
 	    let text = document.getElementById("inputText").value.toLowerCase();
 	    text = replaceDiacritics(text);  // 处理输入文本中的西班牙语音标字母
 	    const selectedDomains = Array.from(document.querySelectorAll('.domain-checkbox:checked')).map(cb => cb.value);
 	    const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
-	
+	    
+	    let newEmails = [];
+	    let emailCount = 0;
+	    
 	    if (emails && selectedDomains.length > 0) {
-	        let filteredEmails = emails.filter(email => selectedDomains.some(domain => email.endsWith(domain)));
-	        filteredEmails.forEach(email => savedEmails.add(email));
+	        newEmails = emails.filter(email => selectedDomains.some(domain => email.endsWith(domain)) && !savedEmails.has(email));
+	        newEmails.forEach(email => savedEmails.add(email));
+	        emailCount = newEmails.length;
 	        updateEmailOutput();
-	    } else {
-	        showAlert("未找到邮箱地址或未选择后缀");
 	    }
+	    
+	    if (emailCount === 0) {
+	        if (emails && emails.length > 0) {
+	            showSuccessAlert(0); // 只有在有邮箱被提取但都是重复的情况下显示“0”
+	        } else {
+	            showAlert("未找到邮箱地址或未选择后缀"); // 没有提取到邮箱地址时显示原先的提示
+	        }
+	    } else {
+	        showSuccessAlert(emailCount); // 提取到的新邮箱数量
+	    }
+	    
 	    return false;
-      }
+	}
+	
+	function showSuccessAlert(count) {
+	    const alert = document.getElementById("success-alert");
+	    alert.textContent = `提取到的邮箱数量: ${count}`;
+	    alert.style.display = "block";
+	    setTimeout(() => {
+	        alert.style.opacity = "0";
+	        setTimeout(() => {
+	            alert.style.display = "none";
+	            alert.style.opacity = "1";
+	        }, 300);
+	    }, 1000);
+	}
 
 
     // 清空输入文本框内容
