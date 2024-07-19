@@ -371,19 +371,21 @@
 
     // 从输入文本提取邮箱并更新页面显示
     function extractEmails() {
-        const text = document.getElementById("inputText").value.toLowerCase();
-        const selectedDomains = Array.from(document.querySelectorAll('.domain-checkbox:checked')).map(cb => cb.value);
-        const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
+	    let text = document.getElementById("inputText").value.toLowerCase();
+	    text = replaceDiacritics(text);  // 处理输入文本中的西班牙语音标字母
+	    const selectedDomains = Array.from(document.querySelectorAll('.domain-checkbox:checked')).map(cb => cb.value);
+	    const emails = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g);
+	
+	    if (emails && selectedDomains.length > 0) {
+	        let filteredEmails = emails.filter(email => selectedDomains.some(domain => email.endsWith(domain)));
+	        filteredEmails.forEach(email => savedEmails.add(email));
+	        updateEmailOutput();
+	    } else {
+	        showAlert("未找到邮箱地址或未选择后缀");
+	    }
+	    return false;
+      }
 
-        if (emails && selectedDomains.length > 0) {
-            let filteredEmails = emails.filter(email => selectedDomains.some(domain => email.endsWith(domain)));
-            filteredEmails.forEach(email => savedEmails.add(email));
-            updateEmailOutput();
-        } else {
-            showAlert("未找到邮箱地址或未选择后缀");
-        }
-        return false;
-    }
 
     // 清空输入文本框内容
     function clearText(input) {
@@ -530,6 +532,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("domainCount").innerHTML = `后缀数量: <span class="count-number">${uniqueDomains.size}</span>`;
         updateSavedEmailsTextarea();
     }
+
+     function replaceDiacritics(text) {
+    const diacriticsMap = {
+        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
+        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U', 'Ü': 'U',
+        'ñ': 'n', 'Ñ': 'N'
+    };
+    return text.replace(/[áéíóúüÁÉÍÓÚÜñÑ]/g, match => diacriticsMap[match] || match);
+}
+	   
 </script>
 
 </body>
