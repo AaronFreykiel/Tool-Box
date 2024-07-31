@@ -20,23 +20,27 @@
         .header {
             background-color: #323271; /* 标题栏背景 */
             color: white;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
+            box-sizing: border-box;
         }
 
         .nav-bar {
             display: flex;
+            flex-wrap: wrap; /* 支持多行显示 */
             justify-content: center;
             background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
+            box-sizing: border-box;
         }
 
         .nav-bar a {
             color: white;
-            padding: 14px 20px;
+            padding: 12px 16px; /* 增加点击区域 */
             text-decoration: none;
             text-align: center;
-            font-size: 16px;
+            font-size: 14px; /* 较小的字体以适应手机屏幕 */
+            display: block; /* 使链接块状显示以便更好地响应点击 */
         }
 
         .nav-bar a:hover {
@@ -54,13 +58,16 @@
             position: relative;
             color: white;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         .content {
             position: relative;
             z-index: 1;
-            max-width: 800px;
+            max-width: 100%;
+            padding: 20px;
             text-align: center;
+            box-sizing: border-box;
         }
 
         .main-content::before {
@@ -75,8 +82,21 @@
         }
 
         @media (max-width: 768px) {
+            .nav-bar a {
+                font-size: 12px; /* 小屏幕下的字体更小 */
+                padding: 10px; /* 减少内边距 */
+            }
+
+            .header {
+                padding: 10px; /* 减少内边距 */
+            }
+
             .main-content {
-                background-position: center center;
+                padding: 15px; /* 减少内边距 */
+            }
+
+            .footer-content p {
+                font-size: 1em; /* 小屏幕下的字体更小 */
             }
         }
 
@@ -86,24 +106,20 @@
             padding: 20px;
             text-align: center;
             border-top: 1px solid #ddd;
+            box-sizing: border-box;
         }
 
         .footer-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .footer-content p {
-            margin: 0;
-            font-size: 1.2em;
-            color: #fff;
+            width: 100%;
         }
 
         .link-list {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: center;
             padding: 0;
             margin: 10px 0 0;
             list-style: none;
@@ -112,7 +128,7 @@
         .link-list .link-column {
             flex: 1;
             min-width: 150px;
-            margin: 0 10px;
+            margin: 5px; /* 减小间距 */
             text-align: center;
         }
 
@@ -122,6 +138,7 @@
             color: #fff;
             margin: 5px 0;
             transition: color 0.3s;
+            font-size: 14px; /* 小屏幕下的字体更小 */
         }
 
         .link-list .link-column a:hover {
