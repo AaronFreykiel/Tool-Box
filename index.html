@@ -89,7 +89,12 @@
             border-top: 2px solid #3b3b8a;
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
-            height: 80px; /* 固定高度 */
+            height: 150px; /* 固定高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
         }
 
         .footer-content {
@@ -101,9 +106,9 @@
         }
 
         .link-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
             padding: 0;
             margin: 10px 0 0;
             list-style: none;
@@ -111,17 +116,14 @@
         }
 
         .link-list .link-column {
-            margin: 10px;
             text-align: center;
-            flex: 1;
-            min-width: 150px;
         }
 
         .link-list .link-column a {
             display: block;
             text-decoration: none;
             color: #fff;
-            margin: 10px 0;
+            margin: 5px 0;
             font-size: 16px;
             border-radius: 5px;
             padding: 12px;
