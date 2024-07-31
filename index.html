@@ -15,6 +15,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            height: 100%;
         }
 
         .header {
@@ -23,10 +24,8 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 2;
+            flex-shrink: 0;
+            height: 80px; /* 固定高度 */
         }
 
         .nav-bar {
@@ -35,9 +34,8 @@
             background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 1;
+            flex-shrink: 0;
+            height: 50px; /* 固定高度 */
         }
 
         .nav-bar a {
@@ -62,11 +60,11 @@
             align-items: center;
             background: url('./img/dh_bkg.jpg') no-repeat center center;
             background-size: cover;
+            overflow: hidden;
+            position: relative;
+            color: white;
             padding: 20px;
             box-sizing: border-box;
-            color: white;
-            position: relative;
-            overflow: hidden;
         }
 
         .content {
@@ -80,21 +78,18 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             overflow-y: auto;
-            max-height: calc(100vh - 120px); /* 适应视口高度，留出头部和尾部空间 */
+            max-height: calc(100vh - 130px); /* 适应视口高度，留出头部和尾部空间 */
         }
 
         .footer {
             background-color: #323271; /* 页脚背景 */
             color: white;
-            padding: 30px 20px;
+            padding: 20px;
             text-align: center;
             border-top: 2px solid #3b3b8a;
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
-            width: 100%;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 2;
+            height: 80px; /* 固定高度 */
         }
 
         .footer-content {
