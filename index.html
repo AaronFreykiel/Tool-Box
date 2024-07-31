@@ -10,22 +10,18 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #f9f9f9;
             color: #333;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            height: 100%;
         }
-
+        
         .header {
             background-color: #323271; /* 标题栏背景 */
             color: white;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            flex-shrink: 0;
-            height: 80px; /* 固定高度 */
         }
 
         .nav-bar {
@@ -33,9 +29,6 @@
             justify-content: center;
             background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            height: 50px; /* 固定高度 */
         }
 
         .nav-bar a {
@@ -44,12 +37,10 @@
             text-decoration: none;
             text-align: center;
             font-size: 16px;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         .nav-bar a:hover {
-            background-color: #4a4ab2;
+            background-color: #4a4ab2; /* 悬停时变浅 */
         }
 
         .main-content {
@@ -59,24 +50,34 @@
             align-items: center;
             background: url('./img/dh_bkg.jpg') no-repeat center center;
             background-size: cover;
+            overflow-y: auto;
             position: relative;
             color: white;
             padding: 20px;
-            box-sizing: border-box;
         }
 
         .content {
             position: relative;
             z-index: 1;
             max-width: 800px;
-            width: 100%;
             text-align: center;
-            background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-            max-height: calc(100vh - 180px); /* 适应视口高度，留出头部和尾部空间 */
+        }
+
+        .main-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* 半透明黑色背景，确保文本可见 */
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                background-position: center center;
+            }
         }
 
         .footer {
@@ -84,36 +85,34 @@
             color: white;
             padding: 20px;
             text-align: center;
-            border-top: 2px solid #3b3b8a;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
-            flex-shrink: 0;
-            height: 100px; /* 固定高度 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
+            border-top: 1px solid #ddd;
         }
 
         .footer-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            box-sizing: border-box;
+        }
+
+        .footer-content p {
+            margin: 0;
+            font-size: 1.2em;
+            color: #fff;
         }
 
         .link-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
             padding: 0;
             margin: 10px 0 0;
             list-style: none;
-            box-sizing: border-box;
         }
 
         .link-list .link-column {
+            flex: 1;
+            min-width: 150px;
+            margin: 0 10px;
             text-align: center;
         }
 
@@ -122,70 +121,11 @@
             text-decoration: none;
             color: #fff;
             margin: 5px 0;
-            font-size: 16px;
-            border-radius: 5px;
-            padding: 12px;
-            transition: background-color 0.3s, color 0.3s;
+            transition: color 0.3s;
         }
 
         .link-list .link-column a:hover {
-            background-color: #4a4ab2;
-            color: #fff;
-        }
-
-        @media (max-width: 1024px) {
-            .nav-bar a {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .content {
-                max-width: 90%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .nav-bar a {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .footer {
-                padding: 20px;
-                height: auto; /* 让页脚适应内容高度 */
-            }
-
-            .link-list .link-column a {
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-bar a {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            .main-content {
-                padding: 15px;
-            }
-
-            .footer {
-                padding: 15px;
-            }
-
-            .link-list .link-column a {
-                font-size: 12px;
-            }
+            color: #cddc39; /* 悬停时链接变浅 */
         }
     </style>
 </head>
