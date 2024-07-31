@@ -9,15 +9,18 @@
         * {
             box-sizing: border-box;
         }
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('.././img/backgroundsy.png'); /* 替换为你的图片路径 */
+            background-repeat: repeat; /* 图片重复铺满背景 */
+            background-size: 241px 238px; /* 设置图片大小 */
+            background-attachment: fixed; /* 使背景图片固定在窗口，不随内容滚动 */
+            background-position: top left; /* 可选，设置背景图片的对齐方式 */
+            background-color: #f4f4f9; /* 为避免图片加载时的闪烁效果，设置一个背景色 */
+            padding: 20px;
             margin: 0;
-            position: relative;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
         }
         .container {
             background-color: #fff;
