@@ -25,6 +25,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
             box-sizing: border-box;
+            position: relative;
+            z-index: 2;
         }
 
         .nav-bar {
@@ -35,6 +37,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 100%;
             box-sizing: border-box;
+            z-index: 1;
         }
 
         .nav-bar a {
@@ -63,6 +66,7 @@
             box-sizing: border-box;
             color: white;
             position: relative;
+            overflow: hidden;
         }
 
         .content {
@@ -71,10 +75,10 @@
             max-width: 800px;
             width: 100%;
             text-align: center;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             overflow-y: auto;
             max-height: calc(100vh - 120px); /* 适应视口高度，留出头部和尾部空间 */
         }
@@ -89,6 +93,8 @@
             flex-shrink: 0;
             width: 100%;
             box-sizing: border-box;
+            position: relative;
+            z-index: 2;
         }
 
         .footer-content {
@@ -110,7 +116,7 @@
         }
 
         .link-list .link-column {
-            margin: 5px 15px;
+            margin: 10px;
             text-align: center;
             flex: 1;
             min-width: 150px;
@@ -129,6 +135,7 @@
 
         .link-list .link-column a:hover {
             background-color: #4a4ab2;
+            color: #fff;
         }
 
         @media (max-width: 1024px) {
