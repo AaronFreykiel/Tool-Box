@@ -71,7 +71,6 @@
             padding: 40px;
             box-sizing: border-box;
             color: white;
-            height: calc(100vh - 160px); /* 减去头部和尾部的高度 */
         }
 
         .content {
@@ -85,7 +84,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             overflow-y: auto;
-            max-height: 100%; /* 限制高度，避免超出容器 */
+            max-height: calc(100vh - 120px); /* 减去头部和尾部的高度 */
         }
 
         .footer {
