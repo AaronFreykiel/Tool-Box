@@ -18,24 +18,23 @@
         }
 
         .header {
-            background-color: #323271;
+            background-color: #323271; /* 标题栏背景 */
             color: white;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
             width: 100%;
-            z-index: 1000;
+            box-sizing: border-box;
         }
 
         .nav-bar {
             display: flex;
             justify-content: center;
-            background-color: #3b3b8a;
+            background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
-            overflow-x: auto;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .nav-bar a {
@@ -46,6 +45,7 @@
             font-size: 16px;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
+            box-sizing: border-box;
         }
 
         .nav-bar a:hover {
@@ -59,10 +59,10 @@
             align-items: center;
             background: url('./img/dh_bkg.jpg') no-repeat center center;
             background-size: cover;
-            position: relative;
-            padding: 40px;
+            padding: 20px;
             box-sizing: border-box;
             color: white;
+            position: relative;
         }
 
         .content {
@@ -80,13 +80,15 @@
         }
 
         .footer {
-            background-color: #323271;
+            background-color: #323271; /* 页脚背景 */
             color: white;
             padding: 30px 20px;
             text-align: center;
             border-top: 2px solid #3b3b8a;
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .footer-content {
@@ -94,6 +96,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
+            box-sizing: border-box;
         }
 
         .link-list {
