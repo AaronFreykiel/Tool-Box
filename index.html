@@ -30,7 +30,7 @@
             background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
             box-sizing: border-box;
-            overflow-x: auto; /* 允许横向滚动 */
+            position: relative;
         }
 
         .nav-bar a {
@@ -47,17 +47,53 @@
             background-color: #4a4ab2; /* 悬停时变浅 */
         }
 
+        .menu-toggle {
+            display: none;
+            background-color: #3b3b8a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .nav-bar ul {
+            display: flex;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .nav-bar li {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar ul {
+                display: none; /* 隐藏导航链接 */
+                flex-direction: column;
+                width: 100%;
+                background-color: #3b3b8a;
+            }
+
+            .nav-bar.active ul {
+                display: flex; /* 显示折叠菜单 */
+            }
+
+            .menu-toggle {
+                display: block; /* 显示菜单图标 */
+            }
+        }
+
         .main-content {
             flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             background: url('./img/dh_bkg.jpg') no-repeat center center;
             background-size: cover;
-            position: relative;
             color: white;
             padding: 20px;
             box-sizing: border-box;
+            overflow: auto; /* 启用滚动条 */
+            position: relative;
+            max-height: calc(100vh - 100px); /* 计算高度，避免溢出 */
         }
 
         .content {
@@ -86,6 +122,7 @@
             text-align: center;
             box-sizing: border-box;
             position: relative;
+            width: 100%;
         }
 
         .footer-content {
@@ -124,19 +161,24 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                font-size: 1.2em;
+                padding: 10px;
+            }
+
             .nav-bar {
                 flex-direction: column;
-                align-items: stretch; /* 确保链接填满容器 */
+                align-items: stretch;
+                padding: 0;
             }
 
             .nav-bar a {
                 font-size: 14px;
                 padding: 10px;
-                text-align: center;
             }
 
-            .main-content {
-                padding: 15px;
+            .menu-toggle {
+                display: block; /* 显示菜单图标 */
             }
 
             .footer {
@@ -151,6 +193,11 @@
         @media (max-width: 480px) {
             .nav-bar a {
                 font-size: 12px;
+                padding: 8px;
+            }
+
+            .header {
+                font-size: 1em;
                 padding: 8px;
             }
 
@@ -174,11 +221,14 @@
         <h1>工具导航</h1>
     </div>
 
-    <div class="nav-bar">
-        <a href="#home">首页</a>
-        <a href="#about">关于我们</a>
-        <a href="#services">服务</a>
-        <a href="#contact">联系</a>
+    <div class="nav-bar" id="nav-bar">
+        <button class="menu-toggle" onclick="toggleMenu()">菜单</button>
+        <ul>
+            <li><a href="#home">首页</a></li>
+            <li><a href="#about">关于我们</a></li>
+            <li><a href="#services">服务</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
     </div>
 
     <div class="main-content">
@@ -209,6 +259,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleMenu() {
+            const navBar = document.getElementById('nav-bar');
+            navBar.classList.toggle('active');
+        }
+    </script>
 
 </body>
 </html>
