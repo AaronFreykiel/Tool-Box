@@ -10,7 +10,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #f4f4f9; /* 轻微的背景色 */
             color: #333;
             display: flex;
             flex-direction: column;
@@ -20,9 +20,13 @@
         .header {
             background-color: #323271; /* 标题栏背景 */
             color: white;
-            padding: 20px;
+            padding: 20px 30px;
             text-align: center;
-            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
         .nav-bar {
@@ -30,22 +34,24 @@
             justify-content: center;
             background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
-            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             overflow-x: auto; /* 允许横向滚动 */
         }
 
         .nav-bar a {
             color: white;
-            padding: 12px 16px; /* 增加点击区域 */
+            padding: 12px 20px;
             text-decoration: none;
             text-align: center;
             font-size: 16px;
             display: block;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 4px;
         }
 
         .nav-bar a:hover {
             background-color: #4a4ab2; /* 悬停时变浅 */
+            color: #fff;
         }
 
         .main-content {
@@ -56,38 +62,31 @@
             background: url('./img/dh_bkg.jpg') no-repeat center center;
             background-size: cover;
             position: relative;
-            color: white;
-            padding: 20px;
+            padding: 40px;
             box-sizing: border-box;
+            color: white;
             overflow-y: auto;
         }
 
         .content {
             position: relative;
             z-index: 1;
-            max-width: 1200px; /* 最大宽度 */
+            max-width: 800px; /* 最大宽度 */
             width: 100%;
             text-align: center;
-            box-sizing: border-box;
-        }
-
-        .main-content::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
-            z-index: 0;
+            background: rgba(0, 0, 0, 0.4); /* 半透明背景 */
+            padding: 20px;
+            border-radius: 8px;
         }
 
         .footer {
             background-color: #323271; /* 页脚背景 */
             color: white;
-            padding: 20px;
+            padding: 20px 30px;
             text-align: center;
-            box-sizing: border-box;
+            border-top: 1px solid #ddd;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         .footer-content {
@@ -95,7 +94,6 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .link-list {
@@ -120,6 +118,8 @@
             margin: 5px 0;
             transition: color 0.3s;
             font-size: 16px;
+            border-radius: 4px;
+            padding: 10px;
         }
 
         .link-list .link-column a:hover {
@@ -133,7 +133,7 @@
             }
 
             .content {
-                max-width: 100%; /* 保证在较小屏幕上填满 */
+                max-width: 90%; /* 保证在较小屏幕上填满 */
             }
         }
 
@@ -146,15 +146,14 @@
             .nav-bar a {
                 font-size: 14px;
                 padding: 10px;
-                text-align: center;
             }
 
             .main-content {
-                padding: 15px;
+                padding: 20px;
             }
 
             .footer {
-                padding: 15px;
+                padding: 20px;
             }
 
             .link-list .link-column a {
@@ -169,11 +168,11 @@
             }
 
             .main-content {
-                padding: 10px;
+                padding: 15px;
             }
 
             .footer {
-                padding: 10px;
+                padding: 15px;
             }
 
             .link-list .link-column a {
