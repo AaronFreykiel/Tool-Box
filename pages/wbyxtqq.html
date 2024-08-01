@@ -18,6 +18,11 @@
             margin: 0;
             color: #333;
             transition: background-color 0.3s, color 0.3s;
+	    -webkit-user-select: none; /* 禁止选择 */
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	    -webkit-touch-callout: none; /* 禁止iOS长按菜单 */
         }
 
         h2 {
@@ -296,7 +301,7 @@
     </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
     <div class="alert alert-success" id="success-alert" style="display: none;">提取到的邮箱数量: 0</div>
     <div class="alert" id="alert" style="display: none; opacity: 1;">未找到邮箱地址或未选择后缀</div>
     <div class="alert" id="clear-alert" style="display: none; opacity: 1;">已清空~</div>
