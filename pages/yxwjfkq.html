@@ -251,6 +251,51 @@
                 document.body.innerHTML = '<div class="no-content">此页面不支持离线访问。</div>';
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const copyButtons = document.querySelectorAll('.copyButton');
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const textToCopy = this.closest('.chunk').querySelector('.chunk-content').innerText;
+                const tempInput = document.createElement('input');
+                document.body.appendChild(tempInput);
+                tempInput.value = textToCopy;
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showAlert('块已复制到剪贴板');
+            });
+        });
+    });
+
+    function showAlert(message) {
+        const alert = document.getElementById('alert');
+        alert.textContent = message;
+        alert.style.opacity = 1;
+        setTimeout(() => {
+            alert.style.opacity = 0;
+        }, 2000);
+    }
+
+    function checkLocal() {
+        if (window.location.protocol === 'file:') {
+            document.body.innerHTML = '<div class="no-content">此页面不支持离线访问。</div>';
+        }
+    }
+
+    // 禁止文本选择和复制，但允许特定元素的复制功能
+    document.addEventListener('selectstart', function(e) {
+        if (!e.target.closest('.copyButton')) {
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('copy', function(e) {
+        if (!e.target.closest('.copyButton')) {
+            e.preventDefault();
+        }
+    });
         
     </script>
 </body>
