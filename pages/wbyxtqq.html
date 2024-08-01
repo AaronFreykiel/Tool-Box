@@ -304,7 +304,7 @@
     </style>
 </head>
 
-<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onload="checkLocal();" onload="checkLocal();">
+<body oncontextmenu="return false;" oncut="return false;" onload="checkLocal();" onload="checkLocal();">
     <div class="alert alert-success" id="success-alert" style="display: none;">提取到的邮箱数量: 0</div>
     <div class="alert" id="alert" style="display: none; opacity: 1;">未找到邮箱地址或未选择后缀</div>
     <div class="alert" id="clear-alert" style="display: none; opacity: 1;">已清空~</div>
@@ -603,30 +603,30 @@ function checkLocal() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-        const copyButtons = document.querySelectorAll('.copyButton');
+    const copyButtons = document.querySelectorAll('.copyButton');
 
-        copyButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const textToCopy = this.closest('.chunk').querySelector('.chunk-content').innerText;
-                const tempInput = document.createElement('input');
-                document.body.appendChild(tempInput);
-                tempInput.value = textToCopy;
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                showAlert('块已复制到剪贴板');
-            });
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const textToCopy = this.closest('.chunk').querySelector('.chunk-content').innerText;
+            const tempInput = document.createElement('input');
+            document.body.appendChild(tempInput);
+            tempInput.value = textToCopy;
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showAlert('块已复制到剪贴板');
         });
     });
+});
 
-    function showAlert(message) {
-        const alert = document.getElementById('alert');
-        alert.textContent = message;
-        alert.style.opacity = 1;
-        setTimeout(() => {
-            alert.style.opacity = 0;
-        }, 2000);
-    }
+function showAlert(message) {
+    const alert = document.getElementById('alert');
+    alert.textContent = message;
+    alert.style.opacity = 1;
+    setTimeout(() => {
+        alert.style.opacity = 0;
+    }, 2000);
+}
 
     function checkLocal() {
         if (window.location.protocol === 'file:') {
