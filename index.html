@@ -21,6 +21,7 @@
             background-color: #323271; /* 标题栏背景 */
             color: white;
             text-align: center;
+            padding: 20px;
         }
 
         .nav-bar {
@@ -145,12 +146,12 @@
             padding: 0;
             margin: 10px 0 0;
             list-style: none;
+            gap: 10px; /* 增加链接列之间的间距 */
         }
 
         .link-list .link-column {
             flex: 1;
             min-width: 150px;
-            margin: 0 10px;
             text-align: center;
         }
 
@@ -160,10 +161,16 @@
             color: #fff;
             margin: 5px 0;
             transition: color 0.3s;
+            background-color: #4a4ab2; /* 方框背景色 */
+            padding: 10px;
+            border-radius: 5px; /* 圆角方框 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            font-size: 14px; /* 调整字体大小 */
         }
 
         .link-list .link-column a:hover {
             color: #cddc39; /* 悬停时链接变浅 */
+            background-color: #5a5a9a; /* 悬停时方框颜色 */
         }
 
         @media (max-width: 768px) {
