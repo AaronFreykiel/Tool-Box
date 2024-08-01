@@ -167,9 +167,12 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+        .no-content {
+            display: none;
+        }
     </style>
 </head>
-<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onload="checkLocal();">
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onload="checkLocal();" onload="checkLocal();">
     <div class="container">
         <h1>邮件地址分块器</h1>
         <input type="file" id="fileInput" class="file-input" accept=".txt">
@@ -242,6 +245,13 @@
                 alert.style.opacity = 0;
             }, 2000);
         }
+
+        function checkLocal() {
+            if (window.location.protocol === 'file:') {
+                document.body.innerHTML = '<div class="no-content">此页面不支持离线访问。</div>';
+            }
+        }
+        
     </script>
 </body>
 </html>
