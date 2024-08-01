@@ -634,18 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 禁止文本选择和复制，但允许特定元素的复制功能
-    document.addEventListener('selectstart', function(e) {
-        if (!e.target.closest('.copyButton')) {
-            e.preventDefault();
-        }
-    });
-
-    document.addEventListener('copy', function(e) {
-        if (!e.target.closest('.copyButton')) {
-            e.preventDefault();
-        }
-    });
+    
 	   
 </script>
 
