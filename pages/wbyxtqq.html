@@ -601,38 +601,7 @@ function checkLocal() {
         }
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    const copyButtons = document.querySelectorAll('.copyButton');
-
-    copyButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const textToCopy = this.closest('.chunk').querySelector('.chunk-content').innerText;
-            const tempInput = document.createElement('input');
-            document.body.appendChild(tempInput);
-            tempInput.value = textToCopy;
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            
-        });
-    });
-});
-
-function showAlert(message) {
-    const alert = document.getElementById('alert');
-    alert.textContent = message;
-    alert.style.opacity = 1;
-    setTimeout(() => {
-        alert.style.opacity = 0;
-    }, 2000);
-}
-
-    function checkLocal() {
-        if (window.location.protocol === 'file:') {
-            document.body.innerHTML = '<div class="no-content">此页面不支持离线访问。</div>';
-        }
-    }
+  
 
     
 	   
