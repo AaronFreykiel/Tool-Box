@@ -29,6 +29,7 @@
             justify-content: center;
             background-color: #3b3b8a; /* 导航栏背景 */
             padding: 10px;
+            position: relative;
         }
 
         .nav-bar a {
@@ -41,6 +42,24 @@
 
         .nav-bar a:hover {
             background-color: #4a4ab2; /* 悬停时变浅 */
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 24px;
+            color: white;
+            background: #3b3b8a;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-bar .nav-links a {
+            display: block;
         }
 
         .main-content {
@@ -75,8 +94,29 @@
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                background-position: center center;
+            .nav-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-bar .nav-links a {
+                padding: 10px;
+                width: 100%;
+                text-align: left;
             }
         }
 
@@ -102,7 +142,6 @@
 
         .link-list {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
             padding: 0;
             margin: 10px 0 0;
@@ -127,6 +166,18 @@
         .link-list .link-column a:hover {
             color: #cddc39; /* 悬停时链接变浅 */
         }
+
+        @media (max-width: 768px) {
+            .link-list {
+                flex-direction: column;
+            }
+
+            .link-list .link-column {
+                flex: none;
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -136,10 +187,13 @@
     </div>
 
     <div class="nav-bar">
-        <a href="#home">首页</a>
-        <a href="#about">关于我们</a>
-        <a href="#services">服务</a>
-        <a href="#contact">联系</a>
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <div class="nav-links" id="nav-links">
+            <a href="#home">首页</a>
+            <a href="#about">关于我们</a>
+            <a href="#services">服务</a>
+            <a href="#contact">联系</a>
+        </div>
     </div>
 
     <div class="main-content">
@@ -170,6 +224,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+    </script>
 
 </body>
 </html>
