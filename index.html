@@ -21,6 +21,7 @@
             background-color: #323271; /* 标题栏背景 */
             color: white;
             text-align: center;
+            
         }
 
         .nav-bar {
@@ -175,12 +176,20 @@
         @media (max-width: 768px) {
             .link-list {
                 flex-direction: column;
+                width: 100%;
             }
 
             .link-list .link-column {
                 flex: none;
                 width: 100%;
                 margin: 5px 0;
+            }
+
+            .link-list .link-column a {
+                width: 100%;
+                box-sizing: border-box; /* 使 padding 在内边距中生效 */
+                text-align: center; /* 居中文本 */
+                margin: 10px 0; /* 调整间距 */
             }
         }
     </style>
