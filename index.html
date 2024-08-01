@@ -21,7 +21,6 @@
             background-color: #323271; /* 标题栏背景 */
             color: white;
             text-align: center;
-            
         }
 
         .nav-bar {
@@ -192,9 +191,22 @@
                 margin: 10px 0; /* 调整间距 */
             }
         }
+
+        /* 禁止文本选择和复制 */
+        body {
+            -webkit-user-select: none; /* 禁止选择 */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 禁止右键菜单 */
+        body {
+            -webkit-touch-callout: none;
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
 
     <div class="header">
         <h1>工具导航</h1>
