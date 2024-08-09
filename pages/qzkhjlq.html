@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
     <meta charset="UTF-8">
@@ -8,7 +7,7 @@
     <title>潜在客户记录器</title>
     <style>
         body {
-            background-image: url('.././img/backgroundsy.png');
+            background-image: url('../img/backgroundsy.png');
             background-repeat: repeat;
             background-size: 241px 238px;
             background-attachment: fixed;
@@ -18,7 +17,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-color: #f8f8f8;
         }
 
         .container {
@@ -30,15 +28,14 @@
             border-radius: 8px;
         }
 
-        h1,
-        h2 {
+        h1, h2 {
             color: #323271;
             text-align: center;
             margin-bottom: 20px;
         }
 
         form {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
@@ -82,7 +79,7 @@
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .btn-container button {
@@ -92,21 +89,27 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
+            table-layout: fixed; /* Ensure fixed table layout */
+        }
+
+        thead {
+            background-color: #f2f2f2;
+            display: table;
+            width: calc(100% - 15px); /* Adjust to account for scrollbar width */
             table-layout: fixed;
         }
 
-        th,
-        td {
+        th, td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: center;
             vertical-align: middle;
+            box-sizing: border-box;
         }
 
         th {
-            background-color: #f2f2f2;
-            color: #333;
+            background-color: #e9e9e9;
         }
 
         .filter-select {
@@ -149,7 +152,28 @@
             display: none;
         }
 
-        /* Responsive design */
+        .scroll-container {
+            position: relative;
+        }
+
+        .scrollbar-fix {
+            width: 15px; /* Adjust this value according to your scrollbar width */
+            display: inline-block;
+            background-color: #f4f4f9; /* Background color to match your page */
+        }
+
+        tbody {
+            display: block;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
         @media (max-width: 600px) {
             form {
                 flex-direction: column;
@@ -170,20 +194,19 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>潜在客户记录器</h1>
         <form id="customerForm">
             <label for="email">邮箱地址:</label>
             <input type="email" id="email" required>
-
+            
             <label for="country">国家:</label>
             <input type="text" id="country" required>
-
+            
             <label for="port">港口:</label>
             <input type="text" id="port" required>
-
+            
             <button type="submit" class="full-width">添加</button>
         </form>
         <h2>潜在客户列表</h2>
@@ -192,29 +215,32 @@
             <button id="importButton">导入记录</button>
             <button id="exportButton">导出记录</button>
         </div>
-        <table id="customerTable">
-            <thead>
-                <tr>
-                    <th>客户称呼</th>
-                    <th>邮箱地址</th>
-                    <th>
-                        <select id="filterCountry" class="filter-select">
-                            <option value="">所有国家</option>
-                        </select>
-                    </th>
-                    <th>
-                        <select id="filterPort" class="filter-select">
-                            <option value="">所有港口</option>
-                        </select>
-                    </th>
-                    <th>备注</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 潜在客户数据将显示在这里 -->
-            </tbody>
-        </table>
+        <div class="scroll-container">
+            <table id="customerTable">
+                <thead>
+                    <tr>
+                        <th>客户称呼</th>
+                        <th>邮箱地址</th>
+                        <th>
+                            <select id="filterCountry" class="filter-select">
+                                <option value="">所有国家</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filterPort" class="filter-select">
+                                <option value="">所有港口</option>
+                            </select>
+                        </th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 潜在客户数据将显示在这里 -->
+                </tbody>
+            </table>
+            <div class="scrollbar-fix"></div>
+        </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -230,11 +256,22 @@
             let customers = [];
 
             function loadCustomers() {
-                if (localStorage.getItem(filePath)) {
-                    customers = JSON.parse(localStorage.getItem(filePath));
+                const savedCustomers = localStorage.getItem(filePath);
+                if (savedCustomers) {
+                    customers = JSON.parse(savedCustomers);
                 } else {
                     localStorage.setItem(filePath, JSON.stringify([]));
                 }
+
+                // 为所有旧记录添加ID
+                customers = customers.map(customer => {
+                    if (!customer.id) {
+                        customer.id = generateId();
+                    }
+                    return customer;
+                });
+
+                localStorage.setItem(filePath, JSON.stringify(customers));
                 displayCustomers();
                 populateFilters();
             }
@@ -242,47 +279,105 @@
             function displayCustomers() {
                 customerTableBody.innerHTML = '';
                 const filteredCustomers = filterCustomers();
-                filteredCustomers.forEach((customer, index) => {
+                filteredCustomers.forEach((customer) => {
                     const row = document.createElement('tr');
+                    row.dataset.id = customer.id; // 使用唯一的ID来标识行
                     row.innerHTML = `
                         <td contenteditable="true" class="name">${customer.name || ''}</td>
                         <td contenteditable="true" class="email">${customer.email}</td>
                         <td contenteditable="true" class="country">${customer.country}</td>
                         <td contenteditable="true" class="port">${customer.port}</td>
                         <td><textarea class="note-input">${customer.note || ''}</textarea></td>
-                        <td><button class="delete-button" data-index="${index}">删除</button></td>
+                        <td><button class="delete-button">删除</button></td>
                     `;
                     customerTableBody.appendChild(row);
                 });
 
-                document.querySelectorAll('.delete-button').forEach(button => {
-                    button.addEventListener('click', deleteCustomer);
-                });
-
-                document.querySelectorAll('[contenteditable="true"]').forEach(cell => {
-                    cell.addEventListener('blur', saveCustomer);
-                });
-
-                document.querySelectorAll('.note-input').forEach(input => {
-                    input.addEventListener('blur', saveCustomer);
-                });
+                attachEventListeners();
             }
 
             function filterCustomers() {
-                const filterCountry = filterCountrySelect.value.toLowerCase();
-                const filterPort = filterPortSelect.value.toLowerCase();
+                const countryFilter = filterCountrySelect.value.trim();
+                const portFilter = filterPortSelect.value.trim();
 
                 return customers.filter(customer => {
-                    return (
-                        (filterCountry === "" || customer.country.toLowerCase().includes(filterCountry)) &&
-                        (filterPort === "" || customer.port.toLowerCase().includes(filterPort))
-                    );
-                }).sort((a, b) => {
-                    if (a.country === b.country) {
-                        return a.port.localeCompare(b.port);
-                    }
-                    return a.country.localeCompare(b.country);
+                    const matchesCountry = countryFilter === '' || customer.country === countryFilter;
+                    const matchesPort = portFilter === '' || customer.port === portFilter;
+                    return matchesCountry && matchesPort;
                 });
+            }
+
+            function attachEventListeners() {
+                customerTableBody.querySelectorAll('.delete-button').forEach(button => {
+                    button.addEventListener('click', handleDelete);
+                });
+
+                customerTableBody.querySelectorAll('td').forEach(cell => {
+                    cell.addEventListener('blur', handleUpdate);
+                });
+
+                customerTableBody.querySelectorAll('textarea.note-input').forEach(textarea => {
+                    textarea.addEventListener('blur', handleUpdate);
+                });
+            }
+
+            customerForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value.trim();
+                const country = document.getElementById('country').value.trim();
+                const port = document.getElementById('port').value.trim();
+
+                if (!email || !country || !port) return;
+
+                const newCustomer = {
+                    id: generateId(),
+                    name: '',
+                    email,
+                    country,
+                    port,
+                    note: ''
+                };
+
+                customers.push(newCustomer);
+                localStorage.setItem(filePath, JSON.stringify(customers));
+
+                customerForm.reset();
+                displayCustomers();
+                populateFilters();
+            });
+
+            function handleUpdate(event) {
+                const row = event.target.closest('tr');
+                const id = row.dataset.id;
+                const updatedCustomer = {
+                    id,
+                    name: row.querySelector('.name').textContent.trim(),
+                    email: row.querySelector('.email').textContent.trim(),
+                    country: row.querySelector('.country').textContent.trim(),
+                    port: row.querySelector('.port').textContent.trim(),
+                    note: row.querySelector('.note-input').value.trim()
+                };
+
+                const index = customers.findIndex(customer => customer.id === id);
+                if (index !== -1) {
+                    customers[index] = updatedCustomer;
+                    localStorage.setItem(filePath, JSON.stringify(customers));
+                    populateFilters();
+                }
+            }
+
+            function handleDelete(event) {
+                const row = event.target.closest('tr');
+                const id = row.dataset.id;
+                customers = customers.filter(customer => customer.id !== id);
+                localStorage.setItem(filePath, JSON.stringify(customers));
+                displayCustomers();
+                populateFilters();
+            }
+
+            function generateId() {
+                return '_' + Math.random().toString(36).substr(2, 9);
             }
 
             function populateFilters() {
@@ -307,81 +402,52 @@
                 });
             }
 
-            function deleteCustomer(e) {
-                const index = e.target.getAttribute('data-index');
-                customers.splice(index, 1);
-                localStorage.setItem(filePath, JSON.stringify(customers));
-                displayCustomers();
-                populateFilters();
-            }
-
-            function saveCustomer(e) {
-                const row = e.target.closest('tr');
-                const index = Array.from(row.parentNode.children).indexOf(row);
-                const name = row.querySelector('.name').textContent;
-                const email = row.querySelector('.email').textContent;
-                const country = row.querySelector('.country').textContent;
-                const port = row.querySelector('.port').textContent;
-                const note = row.querySelector('.note-input').value;
-
-                customers[index] = { name, email, country, port, note };
-                localStorage.setItem(filePath, JSON.stringify(customers));
-                displayCustomers();
-                populateFilters();
-            }
-
-            customerForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const country = document.getElementById('country').value;
-                const port = document.getElementById('port').value;
-
-                customers.push({ name: '', email, country, port, note: '' });
-                localStorage.setItem(filePath, JSON.stringify(customers));
-                displayCustomers();
-                populateFilters();
-                customerForm.reset();
-            });
-
-            filterCountrySelect.addEventListener('change', displayCustomers);
-            filterPortSelect.addEventListener('change', displayCustomers);
-
             exportButton.addEventListener('click', () => {
-                const blob = new Blob([JSON.stringify(customers, null, 2)], { type: 'text/plain;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = '潜在客户.txt';
-                a.click();
-                URL.revokeObjectURL(url);
+                const blob = new Blob([JSON.stringify(customers, null, 2)], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'customers.json';
+                link.click();
             });
 
             importButton.addEventListener('click', () => {
                 importFileInput.click();
             });
 
-            importFileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
+            importFileInput.addEventListener('change', () => {
+                const file = importFileInput.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = (event) => {
-                        customers = JSON.parse(event.target.result);
-                        localStorage.setItem(filePath, JSON.stringify(customers));
-                        displayCustomers();
-                        populateFilters();
+                        try {
+                            const importedCustomers = JSON.parse(event.target.result);
+                            importedCustomers.forEach(importedCustomer => {
+                                if (!importedCustomer.id) {
+                                    importedCustomer.id = generateId();
+                                }
+                                const existingIndex = customers.findIndex(customer => customer.email === importedCustomer.email);
+                                if (existingIndex === -1) {
+                                    customers.push(importedCustomer);
+                                } else {
+                                    customers[existingIndex] = importedCustomer;
+                                }
+                            });
+                            localStorage.setItem(filePath, JSON.stringify(customers));
+                            displayCustomers();
+                            populateFilters();
+                        } catch (e) {
+                            alert('导入失败: 文件格式不正确。');
+                        }
                     };
                     reader.readAsText(file);
                 }
             });
 
+            filterCountrySelect.addEventListener('change', displayCustomers);
+            filterPortSelect.addEventListener('change', displayCustomers);
+
             loadCustomers();
         });
-
-        if (window.location.protocol === 'file:') {
-            document.body.innerHTML = '<div class="no-content">此页面不支持离线访问。</div>';
-        }
-
     </script>
 </body>
-
 </html>
