@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>潜在客户记录器</title>
     <style>
         body {
-            background-image: url('.././img/backgroundsy.png'); /* 替换为你的图片路径 */
-            background-repeat: repeat; /* 图片重复铺满背景 */
-            background-size: 241px 238px; /* 设置图片大小 */
-            background-attachment: fixed; /* 使背景图片固定在窗口，不随内容滚动 */
-            background-position: top left; /* 可选，设置背景图片的对齐方式 */
-            background-color: #f4f4f9; /* 为避免图片加载时的闪烁效果，设置一个背景色 */
+            background-image: url('.././img/backgroundsy.png');
+            background-repeat: repeat;
+            background-size: 241px 238px;
+            background-attachment: fixed;
+            background-position: top left;
+            background-color: #f4f4f9;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -21,7 +22,7 @@
         }
 
         .container {
-            max-width: 1000px; /* 增加容器的最大宽度 */
+            max-width: 1000px;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
@@ -29,7 +30,8 @@
             border-radius: 8px;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             color: #323271;
             text-align: center;
             margin-bottom: 20px;
@@ -91,10 +93,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: fixed; /* 固定表格布局 */
+            table-layout: fixed;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: center;
@@ -167,19 +170,20 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>潜在客户记录器</h1>
         <form id="customerForm">
             <label for="email">邮箱地址:</label>
             <input type="email" id="email" required>
-            
+
             <label for="country">国家:</label>
             <input type="text" id="country" required>
-            
+
             <label for="port">港口:</label>
             <input type="text" id="port" required>
-            
+
             <button type="submit" class="full-width">添加</button>
         </form>
         <h2>潜在客户列表</h2>
@@ -194,13 +198,11 @@
                     <th>客户称呼</th>
                     <th>邮箱地址</th>
                     <th>
-                    
                         <select id="filterCountry" class="filter-select">
                             <option value="">所有国家</option>
                         </select>
                     </th>
                     <th>
-                    
                         <select id="filterPort" class="filter-select">
                             <option value="">所有港口</option>
                         </select>
@@ -375,11 +377,11 @@
             loadCustomers();
         });
 
-           function checkLocal() {
         if (window.location.protocol === 'file:') {
             document.body.innerHTML = '<div class="no-content">此页面不支持离线访问。</div>';
         }
 
     </script>
 </body>
+
 </html>
