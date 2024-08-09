@@ -29,6 +29,7 @@
             justify-content: center;
             background-color: #3b3b8a;
             padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .nav-bar a {
@@ -51,7 +52,7 @@
             padding: 20px;
         }
 
-        .contact-info, .faq, .follow-us {
+        .contact-info, .faq, .follow-us, .contact-form, .location-info {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
@@ -62,21 +63,22 @@
             margin-bottom: 40px;
         }
 
-        .contact-info h2, .faq h3, .follow-us h3 {
+        .contact-info h2, .faq h3, .follow-us h3, .location-info h3 {
             color: #323271;
             margin-bottom: 20px;
             font-size: 24px;
         }
 
-        .contact-info p, .faq p, .follow-us p {
+        .contact-info p, .faq p, .follow-us p, .location-info p {
             margin: 10px 0;
             font-size: 18px;
         }
 
-        .contact-info a, .follow-us a {
+        .contact-info a {
             color: #4a4ab2;
             text-decoration: none;
             font-weight: bold;
+            font-size: 20px;
         }
 
         .faq ul, .follow-us ul {
@@ -89,6 +91,69 @@
             margin: 10px 0;
         }
 
+        .contact-form {
+            text-align: left;
+        }
+
+        .contact-form h3 {
+            color: #323271;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .contact-form label {
+            font-size: 18px;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .contact-form button {
+            background-color: #4a4ab2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #323271;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            color: #4a4ab2;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: #323271;
+        }
+
+        .location-info iframe {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            border: none;
+        }
+
         .footer {
             background-color: #323271;
             color: white;
@@ -98,7 +163,7 @@
         }
 
         @media (max-width: 768px) {
-            .contact-info, .faq, .follow-us {
+            .contact-info, .faq, .follow-us, .contact-form, .location-info {
                 padding: 20px;
             }
 
@@ -111,6 +176,14 @@
                 width: 100%;
                 text-align: left;
                 padding: 10px;
+            }
+
+            .social-icons a {
+                font-size: 20px;
+            }
+
+            .location-info iframe {
+                height: 200px;
             }
         }
     </style>
@@ -132,9 +205,31 @@
         <!-- 联系方式部分 -->
         <div class="contact-info">
             <h2>联系方式</h2>
-            <p>我们随时为您服务，您可以通过以下方式与我们联系：</p>
             <p>邮箱: <a href="mailto:aaron.freykiel@foxmail.com">aaron.freykiel@foxmail.com</a></p>
-            
+        </div>
+
+        <!-- 公司地址部分 -->
+        <div class="location-info">
+            <h3>公司地址</h3>
+            <p>中国广东省广州市白云区上胜大厦停车场旁</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2592.392824962381!2d113.2829523511022!3d23.23591394079019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3402fb7e7b843559%3A0x56aa9fd1361083af!2sShangsheng%20Building%20Parking%20Lot!5e0!3m2!1sen!2shk!4v1723221667477!5m2!1sen!2shk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" aria-label="公司地址地图"></iframe>
+        </div>
+
+        <!-- 联系表单部分 -->
+        <div class="contact-form">
+            <h3>发送信息</h3>
+            <form action="#" method="post">
+                <label for="name">姓名</label>
+                <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
+
+                <label for="email">邮箱</label>
+                <input type="email" id="email" name="email" placeholder="请输入您的邮箱" required>
+
+                <label for="message">信息</label>
+                <textarea id="message" name="message" rows="5" placeholder="请输入您的信息" required></textarea>
+
+                <button type="submit">发送</button>
+            </form>
         </div>
 
         <!-- 常见问题部分 -->
@@ -151,11 +246,11 @@
         <div class="follow-us">
             <h3>关注我们</h3>
             <p>通过以下平台关注我们，获取最新资讯和更新：</p>
-            <ul>
-                <li><a href="#" target="_blank">新浪微博</a></li>
-                <li><a href="#" target="_blank">微信公众号</a></li>
-                <li><a href="#" target="_blank">LinkedIn</a></li>
-            </ul>
+            <div class="social-icons">
+                <a href="#" target="_blank" aria-label="关注我们的微博">微博</a>
+                <a href="#" target="_blank" aria-label="关注我们的微信">微信</a>
+                <a href="#" target="_blank" aria-label="关注我们的LinkedIn">LinkedIn</a>
+            </div>
         </div>
     </div>
 
